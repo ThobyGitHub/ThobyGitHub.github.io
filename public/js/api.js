@@ -43,20 +43,20 @@ const fetchAPI = url => {
 function showMatch(data){
   var matchHTML = "";
   data.matches.forEach(function(match) {
-      matchHTML += `
-          <div class="card">
-            <a href="./match.html?id=${match.id}">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img src="${match.competition.area.ensignUrl}" />
-              </div>
-            </a>
-            <div class="card-content">
-              <span class="card-title truncate">${match.competition.name}</span>
-              <p>${match.homeTeam.name} vs ${match.awayTeam.name}</p>
-              <P>SCORE: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
-            </div>
+    matchHTML += `
+      <div class="card">
+        <a href="./match.html?id=${match.id}">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img src="${match.competition.area.ensignUrl}" />
           </div>
-        `;
+        </a>
+        <div class="card-content">
+          <span class="card-title truncate">${match.competition.name}</span>
+          <p>${match.homeTeam.name} vs ${match.awayTeam.name}</p>
+          <P>SCORE: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+        </div>
+      </div>
+    `;
   });
   // Sisipkan komponen card ke dalam elemen dengan id #content
   document.getElementById("match").innerHTML = matchHTML;
@@ -171,26 +171,35 @@ function getSavedMatches() {
     console.log(match);
     // Menyusun komponen card artikel secara dinamis
     var matchHTML = "";
-    match.forEach(function(match) {
+    if(match.length > 0){
+      match.forEach(function(match) {
+        matchHTML += `
+          <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              <img src="${match.competition.area.ensignUrl}" />
+            </div>
+            <div class="card-content">
+              <span class="card-title truncate">${match.competition.name}</span>
+              <p>${match.homeTeam.name} vs ${match.awayTeam.name}</p>
+              <p>SCORE Fulltime: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
+              <p>SCORE Halftime: ${match.score.halfTime.homeTeam} - ${match.score.halfTime.awayTeam}</p>
+            </div>
+            <div class="container" style="text-align:right; margin-right:0;">
+              <button class="btn red" id="unsave" onclick="unsaveMatch(${match.id})">
+                unsave
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }else{
       matchHTML += `
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img src="${match.competition.area.ensignUrl}" />
-          </div>
-          <div class="card-content">
-            <span class="card-title truncate">${match.competition.name}</span>
-            <p>${match.homeTeam.name} vs ${match.awayTeam.name}</p>
-            <p>SCORE Fulltime: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>
-            <p>SCORE Halftime: ${match.score.halfTime.homeTeam} - ${match.score.halfTime.awayTeam}</p>
-          </div>
-          <div class="container" style="text-align:right; margin-right:0;">
-            <button class="btn red" id="unsave" onclick="unsaveMatch(${match.id})">
-              unsave
-            </button>
-          </div>
+        <div style="max-height:10em; margin-top:3em; text-align:center;">
+          <img class="responsive-img" src="../img/no-match.jpg" alt="offline" style="max-height:25em">
+          <p>Opss.. Tidak ada match disimpan</p>
         </div>
       `;
-    });
+    }
     // Sisipkan komponen card ke dalam elemen dengan id #body-content
     document.getElementById("matches").innerHTML = matchHTML;
   });

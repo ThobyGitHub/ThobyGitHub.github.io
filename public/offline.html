@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Footbal News</title>
+    <meta name="description" content="My first PWA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="stylesheet" href="css/page.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <meta name="theme-color" content="#00897B" />
+  </head>
+  <body>
+    <!-- Navigasi -->
+    <nav class="teal lighten-1" role="navigation">
+      <div class="nav-wrapper container">
+        <a href="#" class="brand-logo" id="logo-container">Football News</a>
+        <a href="#" class="sidenav-trigger" data-target="nav-mobile">☰</a>
+        <ul class="topnav right hide-on-med-and-down"></ul>
+        <ul class="sidenav" id="nav-mobile"></ul>
+      </div>
+    </nav>
+    
+    <!-- Akhir Navigasi -->
+  <div class="container" id="body-content">
+    <div class="container">
+      <div class="offline-page" style="display: flex; height: 80vh; width: 100%;">
+          <div style="max-height:10em; margin-top:3em; text-align:center;">
+            <img class="responsive-img" src="../img/pwa.png" alt="offline" style="max-height:10em">
+            <span>Opss.. You are offline</span>
+          </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/materialize.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/idb.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/sw-register.js"></script>
+  <script>
+  </script>
+  
+</body>
+</html>

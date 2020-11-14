@@ -16,6 +16,7 @@ function saveMatch(match) {
       })
       .then(function() {
         console.log("Match berhasil di simpan.");
+        M.toast({html: "Match berhasil di simpan."});
       });
   }
 
@@ -29,7 +30,8 @@ function unSaveMatch(matchId) {
         return tx.complete;
     })
     .then(function() {
-    console.log("Match berhasil di hapus.");
+        console.log("Match berhasil di hapus.");
+        M.toast({html: "Match berhasil di hapus."});
     });
 }
 

@@ -7,31 +7,33 @@ else
 
 //precaching sebelumnya
 workbox.precaching.precacheAndRoute([
-    { url: '/index.html', revision: '2' },
-    { url: '/nav.html', revision: '2' },
-    { url: '/match.html', revision: '2' },
-    { url: '/css/materialize.min.css', revision: '2' },
-    { url: '/css/page.css', revision: '2' },
-    { url: '/js/materialize.min.js', revision: '2' },
-    { url: '/js/nav.js', revision: '2' },
-    { url: '/js/push.js', revision: '2' },
-    { url: '/js/api.js', revision: '2' },
-    { url: '/js/db.js', revision: '2' },
-    { url: '/js/idb.js', revision: '2' },
-    { url: '/js/sw-register.js', revision: '2' },
-    { url: '/pages/home.html', revision: '2' },
-    { url: '/pages/about.html', revision: '2' },
-    { url: '/pages/contact.html', revision: '2' },
-    { url: '/pages/saved.html', revision: '2' },
-    { url: '/pages/team.html', revision: '2' },
-    { url: '/img/logo.png', revision: '2' },
-    { url: '/img/photo.png', revision: '2' },
-    { url: '/img/pwa.png', revision: '2' },
-    { url: '/img/favicon-32x32.png', revision: '2' },
-    { url: '/maskable_icon.png', revision: '2' },
-    { url: '/icon.png', revision: '2' },
-    { url: '/manifest.json', revision: '2' },
-]);
+    { url: '/index.html', revision: '3' },
+    { url: '/nav.html', revision: '3' },
+    { url: '/match.html', revision: '3' },
+    { url: '/offline.html', revision: '3' },
+    { url: '/css/materialize.min.css', revision: '3' },
+    { url: '/css/page.css', revision: '3' },
+    { url: '/js/materialize.min.js', revision: '3' },
+    { url: '/js/nav.js', revision: '3' },
+    { url: '/js/push.js', revision: '3' },
+    { url: '/js/api.js', revision: '3' },
+    { url: '/js/db.js', revision: '3' },
+    { url: '/js/idb.js', revision: '3' },
+    { url: '/js/sw-register.js', revision: '3' },
+    { url: '/pages/home.html', revision: '3' },
+    { url: '/pages/about.html', revision: '3' },
+    { url: '/pages/contact.html', revision: '3' },
+    { url: '/pages/saved.html', revision: '3' },
+    { url: '/pages/team.html', revision: '3' },
+    { url: '/img/logo.png', revision: '3' },
+    { url: '/img/photo.png', revision: '3' },
+    { url: '/img/pwa.png', revision: '3' },
+    { url: '/img/favicon-32x32.png', revision: '3' },
+    { url: '/img/no-match.jpg', revision: '3' },
+    { url: '/maskable_icon.png', revision: '3' },
+    { url: '/icon.png', revision: '3' },
+    { url: '/manifest.json', revision: '3' },
+], {ignoreUrlParametersMatching: [/.*/]});
 
 //menangani caching gambar pada workbox
 workbox.routing.registerRoute(
@@ -86,3 +88,40 @@ self.addEventListener('push', function(event) {
     self.registration.showNotification('Push Notification', options)
   );
 });
+
+//handle offline
+self.addEventListener("install", function (event) {
+  const urls = ['/offline.html'];
+  const cacheName = workbox.core.cacheNames.runtime;
+  event.waitUntil(
+      caches.open(cacheName).then(function (cache) {
+          return cache.addAll(urls);
+      })
+  );
+});
+
+const urls = ['/offline.html'];
+
+// pages to cache
+
+workbox.routing.registerRoute(new RegExp('/'),
+  async ({
+      event
+  }) => {
+      try {
+          return await workbox.strategies.networkFirst({
+              cacheName: 'soccerball',
+              plugins: [
+                  new workbox.expiration.Plugin({
+                      maxEntries: 60,
+                      maxAgeSeconds: 30 * 24 * 60 * 60, // 30 hari
+                  }),
+              ],
+          }).handle({
+              event
+          });
+      } catch (error) {
+          return caches.match(urls);
+      }
+  }
+);
